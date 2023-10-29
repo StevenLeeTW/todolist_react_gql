@@ -5,7 +5,7 @@ export const resolvers = {
     getToDo: async (parent, args) => {
       try {
         const { toDoId } = args;
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo?id=${toDoId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo?id=${toDoId}`);
         const todo = await response.json();
         return todoTransformFunc(todo);
       } catch (error) {
@@ -14,7 +14,7 @@ export const resolvers = {
     },
     getToDos: async (parent, args) => {
       try {
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo`);
         const todos = await response.json();
         const todosTransform = todos.map(todoTransformFunc);
         return todosTransform;
@@ -29,7 +29,10 @@ export const resolvers = {
       try {
         const { toDoInput } = args;
         const body = JSON.stringify({ toDoInput });
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo`, { method: "POST", body });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo`, {
+          method: "POST",
+          body,
+        });
         const todo = await response.json();
         return todoTransformFunc(todo);
       } catch (error) {
@@ -40,10 +43,13 @@ export const resolvers = {
       try {
         const { toDoId, toDoInput } = args;
         const body = JSON.stringify({ toDoInput });
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo?id=${toDoId}`, {
-          method: "POST",
-          body,
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo?id=${toDoId}`,
+          {
+            method: "POST",
+            body,
+          }
+        );
         const todo = await response.json();
         return todoTransformFunc(todo);
       } catch (error) {
@@ -53,9 +59,12 @@ export const resolvers = {
     deleteToDo: async (parent, args) => {
       try {
         const { toDoId } = args;
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo?id=${toDoId}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo?id=${toDoId}`,
+          {
+            method: "DELETE",
+          }
+        );
         const resStatus = await response.status;
         return resStatus;
       } catch (error) {
@@ -64,7 +73,9 @@ export const resolvers = {
     },
     deleteToDos: async (parent, args) => {
       try {
-        const response = await fetch(`${process.env.API_DOMAIN}api/todo`, { method: "DELETE" });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo`, {
+          method: "DELETE",
+        });
         const resStatus = await response.status;
         return resStatus;
       } catch (error) {
