@@ -5,6 +5,7 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
+    date: Int
   }
   input ToDoInput {
     title: String!
@@ -18,6 +19,6 @@ export const typeDefs = gql`
     createToDo(toDoInput: ToDoInput): ToDo
     updateToDo(toDoId: ID!, toDoInput: ToDoInput): ToDo
     deleteToDo(toDoId: ID!): ToDo
-    deleteToDos: [ToDo!]!
+    deleteToDos: Boolean
   }
 `;

@@ -1,8 +1,10 @@
 import gql from "graphql-tag";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Unstable_Grid2";
-import { useQuery } from "@apollo/client";
+import React from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import Todolist from "../common/Todolist";
+import Add from "@mui/icons-material/Add";
+import Delete from "@mui/icons-material/Delete";
+import { useModal } from "../context/modals";
 
 const GetToDosQuery = gql`
   query {
@@ -10,22 +12,63 @@ const GetToDosQuery = gql`
       id
       description
       title
+      date
     }
   }
 `;
 
+const DeleteToDosMutation = gql`mutation {
+  deleteToDos
+}`;
+
 const Index = () => {
-  const { data } = useQuery(GetToDosQuery);
+  const { data, refetch } = useQuery(GetToDosQuery);
+  const [deleteToDo] = useMutation(DeleteToDosMutation, {
+    onCompleted(data, clientOptions) {
+      if (data.deleteToDos) refetch();
+    },
+  });
+  const { openModal, closeModal } = useModal();
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <div>
+      <nav style={{ position: "fixed", top: "24px", right: "32px" }}>
+        <Add
+          style={{
+            width: "32px",
+            height: "32px",
+            marginRight: "16px",
+            color: "#333",
+            border: "1px solid #333",
+            borderRadius: "50%",
+          }}
+          onClick={() => {
+            openModal("add", () => {
+              closeModal();
+              refetch();
+            });
+          }}
+        />
+        <Delete
+          style={{
+            width: "32px",
+            height: "32px",
+            color: "#333",
+            border: "1px solid #333",
+            borderRadius: "50%",
+          }}
+          onClick={() => {
+            openModal("delete", () => {
+              deleteToDo();
+              closeModal();
+            });
+          }}
+        />
+      </nav>
       <div>
-        <Grid container rowSpacing={3} columnSpacing={3}>
-          {data?.getToDos?.map((v) => (
-            <div>{v.description}</div>
-          ))}
-        </Grid>
+        <Todolist todolist={data?.getToDos ?? []} />
       </div>
-    </Box>
+    </div>
   );
 };
 

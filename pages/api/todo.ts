@@ -13,6 +13,7 @@ export default async (req, res) => {
         res.status(400);
       }
     } else {
+      
       try {
         const result = await ToDo.find();
         return res.status(200).send(result);
@@ -26,7 +27,7 @@ export default async (req, res) => {
     if (!id) {
       try {
         const { toDoInput } = JSON.parse(body);
-        const result = await ToDo.create(toDoInput);
+        const result = await ToDo.create({ ...toDoInput, date: new Date().getTime() });
         res.status(200).send(result);
       } catch {
         res.status(400);
