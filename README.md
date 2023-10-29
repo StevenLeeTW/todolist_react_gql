@@ -1,4 +1,4 @@
-# An Todolist web app 
+# A Todolist web app 
 tech stack
 ```bash
 Nextjs
