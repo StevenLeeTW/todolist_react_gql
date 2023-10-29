@@ -8,12 +8,20 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { GetToDosQuery } from "../../../pages";
 import { useQuery } from "@apollo/client";
+
+const GetToDosQuery = gql`
+  query {
+    getToDos {
+      id
+      description
+      title
+    }
+  }
+`;
 
 const Index = () => {
   const { data } = useQuery(GetToDosQuery);
-    console.log(4,data)
   return (
     <Box sx={{ display: "flex" }}>
       <div>
@@ -22,10 +30,7 @@ const Index = () => {
           This app uses the Next.js App Router and Material UI v5.
         </Alert>
         <Grid container rowSpacing={3} columnSpacing={3}>
-          <Grid xs={6}></Grid>
-          <Grid xs={6}></Grid>
-          <Grid xs={6}></Grid>
-          <Grid xs={6}></Grid>
+          {data?.map()}
         </Grid>
       </div>
       <Drawer
