@@ -1,5 +1,4 @@
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -9,12 +8,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { ViewerQuery } from "../../../pages";
+import { GetToDosQuery } from "../../../pages";
+import { useQuery } from "@apollo/client";
 
 const Index = () => {
-  const {
-    data: { viewer },
-  } = useQuery(ViewerQuery);
+  const { data } = useQuery(GetToDosQuery);
+    console.log(4,data)
   return (
     <Box sx={{ display: "flex" }}>
       <div>

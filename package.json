@@ -6,17 +6,18 @@
     "start": "next start"
   },
   "dependencies": {
-    "@emotion/cache": "latest",
-    "@emotion/react": "latest",
-    "@emotion/styled": "latest",
-    "@mui/icons-material": "latest",
-    "@mui/material": "latest",
     "@apollo/client": "^3.7.1",
     "@apollo/server": "^4.1.1",
     "@as-integrations/next": "^1.1.0",
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
     "@graphql-tools/schema": "^9.0.9",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
     "deepmerge": "4.2.2",
     "graphql": "^16.6.0",
+    "mongoose": "^6.12.1",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -25,6 +26,7 @@
     "@types/node": "^18.0.2",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "dotenv": "^16.3.1",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "^4.7.4"
