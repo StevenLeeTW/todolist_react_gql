@@ -4,6 +4,7 @@ tech stack
 Nextjs
 Apollo graphql Server and Client
 javascript
+typescript
 Mui
 mongodb atlas
 vercel deployment(CI/CD)
