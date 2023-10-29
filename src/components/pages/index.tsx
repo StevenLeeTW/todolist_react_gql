@@ -30,7 +30,9 @@ const Index = () => {
           This app uses the Next.js App Router and Material UI v5.
         </Alert>
         <Grid container rowSpacing={3} columnSpacing={3}>
-          {data?.map()}
+          {data?.getToDos?.map((v) => (
+            <div>{v.description}</div>
+          ))}
         </Grid>
       </div>
       <Drawer
