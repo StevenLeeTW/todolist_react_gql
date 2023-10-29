@@ -24,37 +24,52 @@ export const resolvers = {
     },
   },
 
-  // Mutation: {
-  //   createToDo: async (parent, args) => {
-  //     try {
-  //       const { toDoInput } = args;
-  //       return await ToDo.create(toDoInput);
-  //     } catch (error) {
-  //       throw new Error(error);
-  //     }
-  //   },
-  //   updateToDo: async (parent, args) => {
-  //     try {
-  //       const { toDoId, toDoInput } = args;
-  //       return await ToDo.findOneAndUpdate(toDoId, toDoInput, { new: true });
-  //     } catch (error) {
-  //       throw new Error(error);
-  //     }
-  //   },
-  //   deleteToDo: async (parent, args) => {
-  //     try {
-  //       const { toDoId } = args;
-  //       return await ToDo.findByIdAndDelete(toDoId);
-  //     } catch (error) {
-  //       throw new Error(error);
-  //     }
-  //   },
-  //   deleteToDos: async (parent, args) => {
-  //     try {
-  //       return await ToDo.remove();
-  //     } catch (error) {
-  //       throw new Error(error);
-  //     }
-  //   },
-  // },
+  Mutation: {
+    createToDo: async (parent, args) => {
+      try {
+        const { toDoInput } = args;
+        const body = JSON.stringify({ toDoInput });
+        const response = await fetch(`http://localhost:3000/api/todo`, { method: "POST", body });
+        const todo = await response.json();
+        return todoTransformFunc(todo);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    updateToDo: async (parent, args) => {
+      try {
+        const { toDoId, toDoInput } = args;
+        const body = JSON.stringify({ toDoInput });
+        const response = await fetch(`http://localhost:3000/api/todo?id=${toDoId}`, {
+          method: "POST",
+          body,
+        });
+        const todo = await response.json();
+        return todoTransformFunc(todo);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    deleteToDo: async (parent, args) => {
+      try {
+        const { toDoId } = args;
+        const response = await fetch(`http://localhost:3000/api/todo?id=${toDoId}`, {
+          method: "DELETE",
+        });
+        const resStatus = await response.status;
+        return resStatus;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    deleteToDos: async (parent, args) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/todo`, { method: "DELETE" });
+        const resStatus = await response.status;
+        return resStatus;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  },
 };
