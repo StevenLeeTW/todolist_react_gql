@@ -28,7 +28,7 @@ const columns: readonly Column[] = [
   { id: "description", label: "Description", minWidth: 180 },
   {
     id: "date",
-    label: "Date",
+    label: "CreatedAt",
     minWidth: 120,
     align: "right",
     dateFormat: (value: number | string) => new Date(value).toLocaleString() ?? "-",
