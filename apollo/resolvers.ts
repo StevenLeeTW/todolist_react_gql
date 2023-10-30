@@ -66,7 +66,7 @@ export const resolvers = {
           }
         );
         const resStatus = await response.status;
-        return resStatus;
+        return resStatus === 200;
       } catch (error) {
         throw new Error(error);
       }
