@@ -18,7 +18,7 @@ interface Column {
   label: string;
   minWidth?: number;
   align?: "right" | "center";
-  format?: (value: number | string) => string;
+  dateFormat?: (value: number | string) => string;
 }
 
 const columns: readonly Column[] = [
@@ -29,7 +29,7 @@ const columns: readonly Column[] = [
     label: "Date",
     minWidth: 120,
     align: "right",
-    format: (value: number | string) => value?.toLocaleString("en-US") ?? "-",
+    dateFormat: (value: number | string) => new Date(value).toLocaleString() ?? "-",
   },
   { id: "actions", label: "Actions", align: "center", minWidth: 80 },
 ];
@@ -120,7 +120,7 @@ export default function Todolist({
                           <EditIcon
                             style={{ marginRight: "10px" }}
                             onClick={() => {
-                              openModal("add", (title, description) => {
+                              openModal("edit", (title, description) => {
                                 updateToDo({
                                   variables: { toDoId: row.id, toDoInput: { title, description } },
                                 });
@@ -129,7 +129,7 @@ export default function Todolist({
                           />
                           <DeleteIcon
                             onClick={() => {
-                              openModal("delete", () => {
+                              openModal("deleteOne", () => {
                                 deleteToDo({ variables: { toDoId: row.id } });
                               });
                             }}
@@ -140,7 +140,7 @@ export default function Todolist({
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && column.label === "Date" ? column.format(value) : value}
+                        {column.dateFormat && column.label === "Date" ? column.dateFormat(value) : value}
                       </TableCell>
                     );
                   })}

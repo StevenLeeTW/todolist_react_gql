@@ -24,7 +24,7 @@ export default function Modal({
   modalCb,
   onClose,
 }: {
-  modalType?: "add" | "delete";
+  modalType?: "add" | "delete" | "edit" | "deleteOne";
   modalCb: (title?: string, description?: string) => void;
   onClose: () => void;
 }) {
@@ -50,10 +50,25 @@ export default function Modal({
               alignItems: "center",
             }}
           >
-            {modalType === "add" ? (
+            {modalType.includes("delete") ? (
               <>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Add a todo in todolist
+                  {modalType === "deleteOne" ? "Delete one todo" : "Delete all todos"}
+                </Typography>
+                <Button
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    modalCb();
+                  }}
+                >
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  {modalType === "edit" ? "Edit a todo in todolist" : "Add a todo in todolist"}
                 </Typography>
                 <TextField
                   id="standard-basic"
@@ -82,21 +97,6 @@ export default function Modal({
                   }}
                 >
                   Send
-                </Button>
-              </>
-            ) : (
-              <>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Delete all todos
-                </Typography>
-                <Button
-                  variant="outlined"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => {
-                    modalCb();
-                  }}
-                >
-                  Delete
                 </Button>
               </>
             )}

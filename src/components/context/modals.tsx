@@ -3,7 +3,10 @@ import Modal from "../common/modal";
 
 const ModalContext = createContext<{
   modalcb?: () => void;
-  openModal?: (type?: "add" | "delete", cb?: (title?: string, desc?: string) => void) => void;
+  openModal?: (
+    type?: "add" | "delete" | "edit" | "deleteOne",
+    cb?: (title?: string, desc?: string) => void
+  ) => void;
   closeModal?: () => void;
 }>({});
 
