@@ -49,7 +49,15 @@ const Index = () => {
 
   return (
     <div>
-      <nav style={{ position: "fixed", top: "24px", right: "32px" }}>
+      <nav
+        style={{
+          position: "fixed",
+          top: "24px",
+          right: "32px",
+          zIndex: 5,
+          backgroundColor: "transparent",
+        }}
+      >
         <Add
           style={{
             width: "32px",
@@ -81,11 +89,120 @@ const Index = () => {
           }}
         />
       </nav>
+      <div style={{ display: "flex", marginLeft: "5%", marginTop: "24px" }}>
+        <div
+          style={{
+            backgroundColor: "white",
+            border: "1px solid #555",
+            borderRadius: "50%",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        ></div>
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          new
+        </div>
+        <div
+          style={{
+            backgroundColor: "#6fbf73",
+            borderRadius: "50%",
+            border: "1px solid #555",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        />
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          today
+        </div>
+        <div
+          style={{
+            backgroundColor: "#4dabf5",
+            borderRadius: "50%",
+            border: "1px solid #555",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        />
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          yesterday
+        </div>
+      </div>
+      <div style={{ display: "flex", marginLeft: "5%", marginTop: "24px" }}>
+        <div
+          style={{
+            backgroundColor: "#ffcd38",
+            borderRadius: "50%",
+            border: "1px solid #555",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        />
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          3 days ago
+        </div>
+        <div
+          style={{
+            backgroundColor: "#f44336",
+            borderRadius: "50%",
+            border: "1px solid #555",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        />
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          5 days ago
+        </div>
+      </div>
+      <div style={{ display: "flex", marginLeft: "5%", marginTop: "24px" }}>
+        <div
+          style={{
+            backgroundColor: "#673ab7",
+            borderRadius: "50%",
+            border: "1px solid #555",
+            width: "16px",
+            height: "16px",
+            marginRight: "8px",
+          }}
+        />
+        <div
+          style={{
+            marginRight: "8px",
+          }}
+        >
+          long time
+        </div>
+      </div>
       <div>
         <Todolist todolist={data?.getToDos ?? []} refetch={refetch} />
       </div>
     </div>
   );
 };
+
 
 export default Index;

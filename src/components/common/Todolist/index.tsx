@@ -13,6 +13,8 @@ import { useModal } from "../../context/modals";
 import { useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 
+const ONE_DAY_TIMESTAMP = 86400000;
+
 interface Column {
   id: "title" | "description" | "date" | "actions";
   label: string;
@@ -93,7 +95,7 @@ export default function Todolist({
   };
 
   return (
-    <Paper sx={{ width: "90%", overflow: "hidden", margin: "80px auto" }}>
+    <Paper sx={{ width: "90%", overflow: "hidden", margin: "30px auto" }}>
       <TableContainer sx={{ maxHeight: "80vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -111,6 +113,21 @@ export default function Todolist({
           </TableHead>
           <TableBody>
             {todolist.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              const cur = new Date().getTime();
+              const rowDate = new Date(row.date).getTime();
+              const diff = cur - rowDate;
+              let bgColor = "white";
+              if (diff > 1200000) {
+                bgColor = "#6fbf73";
+              } else if (diff > ONE_DAY_TIMESTAMP) {
+                bgColor = "#4dabf5";
+              } else if (diff > 3 * ONE_DAY_TIMESTAMP) {
+                bgColor = "#ffcd38";
+              } else if (diff > 5 * ONE_DAY_TIMESTAMP) {
+                bgColor = "#f44336";
+              } else if (diff > 7 * ONE_DAY_TIMESTAMP) {
+                bgColor = "#673ab7";
+              }
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
                   {columns.map((column) => {
@@ -118,16 +135,34 @@ export default function Todolist({
                       return (
                         <TableCell key={column.id} align={column.align}>
                           <EditIcon
-                            style={{ marginRight: "10px" }}
+                            style={{
+                              marginRight: "10px",
+                              color: "#555",
+                              border: `1px solid #555`,
+                              cursor: "pointer",
+                              backgroundColor: bgColor,
+                              borderRadius: "50%",
+                            }}
                             onClick={() => {
                               openModal("edit", (title, description) => {
                                 updateToDo({
-                                  variables: { toDoId: row.id, toDoInput: { title, description } },
+                                  variables: {
+                                    toDoId: row.id,
+                                    toDoInput: { title, description },
+                                  },
                                 });
                               });
                             }}
                           />
                           <DeleteIcon
+                            style={{
+                              borderWidth: "2px",
+                              cursor: "pointer",
+                              color: "#555",
+                              border: `1px solid #555`,
+                              backgroundColor: bgColor,
+                              borderRadius: "50%",
+                            }}
                             onClick={() => {
                               openModal("deleteOne", () => {
                                 deleteToDo({ variables: { toDoId: row.id } });
@@ -140,7 +175,9 @@ export default function Todolist({
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.dateFormat && column.label === "Date" ? column.dateFormat(value) : value}
+                        {column.dateFormat && column.label === "Date"
+                          ? column.dateFormat(value)
+                          : value}
                       </TableCell>
                     );
                   })}
