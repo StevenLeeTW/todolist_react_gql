@@ -47,6 +47,17 @@ const DeleteToDoMutation = gql`
   }
 `;
 
+const UpdateToDoMutation = gql`
+  mutation ($toDoId: ID!, $toDoInput: ToDoInput) {
+    updateToDo(toDoId: $toDoId, toDoInput: $toDoInput) {
+      date
+      description
+      id
+      title
+    }
+  }
+`;
+
 export default function Todolist({
   todolist,
   refetch,
@@ -63,14 +74,14 @@ export default function Todolist({
       closeModal();
     },
   });
-  // const [createToDo] = useMutation(CreateToDoMutation, {
-  //   async onCompleted(data) {
-  //     if (data.createToDo) {
-  //       await refetch();
-  //     }
-  //     closeModal();
-  //   },
-  // });
+  const [updateToDo] = useMutation(UpdateToDoMutation, {
+    async onCompleted(data) {
+      if (data.updateToDo) {
+        await refetch();
+      }
+      closeModal();
+    },
+  });
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -106,7 +117,16 @@ export default function Todolist({
                     if (column.id === "actions") {
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <EditIcon style={{ marginRight: "10px" }} />
+                          <EditIcon
+                            style={{ marginRight: "10px" }}
+                            onClick={() => {
+                              openModal("add", (title, description) => {
+                                updateToDo({
+                                  variables: { toDoId: row.id, toDoInput: { title, description } },
+                                });
+                              });
+                            }}
+                          />
                           <DeleteIcon
                             onClick={() => {
                               openModal("delete", () => {

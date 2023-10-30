@@ -13,7 +13,6 @@ export default async (req, res) => {
         res.status(400);
       }
     } else {
-      
       try {
         const result = await ToDo.find();
         return res.status(200).send(result);
@@ -28,7 +27,7 @@ export default async (req, res) => {
       try {
         const { toDoInput } = JSON.parse(body);
         const result = await ToDo.create({ ...toDoInput });
-        const success = Boolean(await result)
+        const success = Boolean(await result);
         res.status(200).send(success);
       } catch {
         res.status(400);
@@ -36,7 +35,7 @@ export default async (req, res) => {
     } else {
       try {
         const { toDoInput } = JSON.parse(body);
-        const result = await ToDo.findOneAndUpdate(id, toDoInput, { new: true });
+        const result = await ToDo.findByIdAndUpdate(id, toDoInput);
         res.status(200).send(result);
       } catch {
         res.status(400);
