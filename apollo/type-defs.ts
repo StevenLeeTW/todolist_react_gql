@@ -18,7 +18,7 @@ export const typeDefs = gql`
   type Mutation {
     createToDo(toDoInput: ToDoInput): Boolean
     updateToDo(toDoId: ID!, toDoInput: ToDoInput): ToDo
-    deleteToDo(toDoId: ID!): ToDo
+    deleteToDo(toDoId: ID!): Boolean
     deleteToDos: Boolean
   }
 `;

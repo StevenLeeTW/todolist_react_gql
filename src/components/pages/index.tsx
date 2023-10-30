@@ -31,7 +31,7 @@ const CreateToDoMutation = gql`
 
 const Index = () => {
   const { data, refetch } = useQuery(GetToDosQuery);
-  const [deleteToDo] = useMutation(DeleteToDosMutation, {
+  const [deleteToDos] = useMutation(DeleteToDosMutation, {
     onCompleted(data) {
       if (data.deleteToDos) refetch();
       closeModal();
@@ -76,13 +76,13 @@ const Index = () => {
           }}
           onClick={() => {
             openModal("delete", () => {
-              deleteToDo();
+              deleteToDos();
             });
           }}
         />
       </nav>
       <div>
-        <Todolist todolist={data?.getToDos ?? []} />
+        <Todolist todolist={data?.getToDos ?? []} refetch={refetch} />
       </div>
     </div>
   );

@@ -9,6 +9,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import { useModal } from "../../context/modals";
+import { useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 interface Column {
   id: "title" | "description" | "date" | "actions";
@@ -32,14 +35,42 @@ const columns: readonly Column[] = [
 ];
 
 interface TodolistProps {
+  id: string;
   title: string;
   description: string;
   date: string;
 }
 
-export default function Todolist({ todolist }: { todolist: TodolistProps[] }) {
+const DeleteToDoMutation = gql`
+  mutation ($toDoId: ID!) {
+    deleteToDo(toDoId: $toDoId)
+  }
+`;
+
+export default function Todolist({
+  todolist,
+  refetch,
+}: {
+  todolist: TodolistProps[];
+  refetch: () => void;
+}) {
+  const { openModal, closeModal } = useModal();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [deleteToDo] = useMutation(DeleteToDoMutation, {
+    onCompleted(data) {
+      if (data.deleteToDo) refetch();
+      closeModal();
+    },
+  });
+  // const [createToDo] = useMutation(CreateToDoMutation, {
+  //   async onCompleted(data) {
+  //     if (data.createToDo) {
+  //       await refetch();
+  //     }
+  //     closeModal();
+  //   },
+  // });
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -52,7 +83,7 @@ export default function Todolist({ todolist }: { todolist: TodolistProps[] }) {
 
   return (
     <Paper sx={{ width: "90%", overflow: "hidden", margin: "80px auto" }}>
-      <TableContainer sx={{ maxHeight: '80vh' }}>
+      <TableContainer sx={{ maxHeight: "80vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -74,12 +105,15 @@ export default function Todolist({ todolist }: { todolist: TodolistProps[] }) {
                   {columns.map((column) => {
                     if (column.id === "actions") {
                       return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                        >
-                          <EditIcon style={{marginRight: '10px'}} />
-                          <DeleteIcon />
+                        <TableCell key={column.id} align={column.align}>
+                          <EditIcon style={{ marginRight: "10px" }} />
+                          <DeleteIcon
+                            onClick={() => {
+                              openModal("delete", () => {
+                                deleteToDo({ variables: { toDoId: row.id } });
+                              });
+                            }}
+                          />
                         </TableCell>
                       );
                     }
