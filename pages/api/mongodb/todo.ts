@@ -22,6 +22,10 @@ const toDoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 const ToDo = mongoose.models.ToDo || mongoose.model("ToDo", toDoSchema);
 

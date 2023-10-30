@@ -34,7 +34,7 @@ const columns: readonly Column[] = [
 interface TodolistProps {
   title: string;
   description: string;
-  date: number;
+  date: string;
 }
 
 export default function Todolist({ todolist }: { todolist: TodolistProps[] }) {
@@ -52,7 +52,7 @@ export default function Todolist({ todolist }: { todolist: TodolistProps[] }) {
 
   return (
     <Paper sx={{ width: "90%", overflow: "hidden", margin: "80px auto" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: '80vh' }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

@@ -5,7 +5,7 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
-    date: Int
+    date: String
   }
   input ToDoInput {
     title: String!
@@ -16,7 +16,7 @@ export const typeDefs = gql`
     getToDos: [ToDo!]!
   }
   type Mutation {
-    createToDo(toDoInput: ToDoInput): ToDo
+    createToDo(toDoInput: ToDoInput): Boolean
     updateToDo(toDoId: ID!, toDoInput: ToDoInput): ToDo
     deleteToDo(toDoId: ID!): ToDo
     deleteToDos: Boolean

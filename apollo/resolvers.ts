@@ -12,11 +12,11 @@ export const resolvers = {
         throw new Error(error);
       }
     },
-    getToDos: async (parent, args) => {
+    getToDos: async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/todo`);
         const todos = await response.json();
-        const todosTransform = todos.map(todoTransformFunc);
+        const todosTransform = todos.map(todoTransformFunc).reverse();
         return todosTransform;
       } catch (error) {
         throw new Error(error);
@@ -33,8 +33,8 @@ export const resolvers = {
           method: "POST",
           body,
         });
-        const todo = await response.json();
-        return todoTransformFunc(todo);
+        const boolean = await response.json();
+        return boolean;
       } catch (error) {
         throw new Error(error);
       }

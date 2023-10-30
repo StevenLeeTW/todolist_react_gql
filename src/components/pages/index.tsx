@@ -17,15 +17,32 @@ const GetToDosQuery = gql`
   }
 `;
 
-const DeleteToDosMutation = gql`mutation {
-  deleteToDos
-}`;
+const DeleteToDosMutation = gql`
+  mutation {
+    deleteToDos
+  }
+`;
+
+const CreateToDoMutation = gql`
+  mutation ($toDoInput: ToDoInput) {
+    createToDo(toDoInput: $toDoInput)
+  }
+`;
 
 const Index = () => {
   const { data, refetch } = useQuery(GetToDosQuery);
   const [deleteToDo] = useMutation(DeleteToDosMutation, {
-    onCompleted(data, clientOptions) {
+    onCompleted(data) {
       if (data.deleteToDos) refetch();
+      closeModal();
+    },
+  });
+  const [createToDo] = useMutation(CreateToDoMutation, {
+    async onCompleted(data) {
+      if (data.createToDo) {
+        await refetch();
+      }
+      closeModal();
     },
   });
   const { openModal, closeModal } = useModal();
@@ -43,9 +60,9 @@ const Index = () => {
             borderRadius: "50%",
           }}
           onClick={() => {
-            openModal("add", () => {
-              closeModal();
-              refetch();
+            openModal("add", (title, description) => {
+              if (title && description)
+                createToDo({ variables: { toDoInput: { title, description } } });
             });
           }}
         />
@@ -60,7 +77,6 @@ const Index = () => {
           onClick={() => {
             openModal("delete", () => {
               deleteToDo();
-              closeModal();
             });
           }}
         />

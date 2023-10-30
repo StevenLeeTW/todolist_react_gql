@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ModalBase from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Stack from "@mui/material/Stack";
 import CloseIcon from "@mui/icons-material/Close";
+import { TextField } from "@mui/material";
 
 const style = {
   position: "fixed" as "fixed",
@@ -19,25 +19,16 @@ const style = {
   maxWidth: "60%",
 };
 
-function IconLabelButtons() {
-  return (
-    <Stack direction="row" spacing={2}>
-      <Button variant="contained" endIcon={<SendIcon />}>
-        Send
-      </Button>
-    </Stack>
-  );
-}
-
 export default function Modal({
   modalType,
   modalCb,
   onClose,
 }: {
   modalType?: "add" | "delete";
-  modalCb: () => void;
+  modalCb: (title?: string, description?: string) => void;
   onClose: () => void;
 }) {
+  const [todoInfo, setTodoInfo] = useState({ title: "", description: "" });
   return (
     <div>
       <ModalBase
@@ -64,13 +55,47 @@ export default function Modal({
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Add a todo in todolist
                 </Typography>
+                <TextField
+                  id="standard-basic"
+                  variant="standard"
+                  label="Title"
+                  onChange={(e) => {
+                    setTodoInfo((prev) => ({ ...prev, title: e.target.value }));
+                  }}
+                  required
+                />
+                <TextField
+                  id="standard-basic"
+                  variant="standard"
+                  label="Description"
+                  onChange={(e) => {
+                    setTodoInfo((prev) => ({ ...prev, description: e.target.value }));
+                  }}
+                  required
+                />
+                <Button
+                  style={{ marginTop: "24px" }}
+                  variant="contained"
+                  endIcon={<SendIcon />}
+                  onClick={() => {
+                    modalCb(todoInfo.title, todoInfo.description);
+                  }}
+                >
+                  Send
+                </Button>
               </>
             ) : (
               <>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Delete all todos
                 </Typography>
-                <Button variant="outlined" startIcon={<DeleteIcon />} onClick={modalCb}>
+                <Button
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    modalCb();
+                  }}
+                >
                   Delete
                 </Button>
               </>

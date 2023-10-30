@@ -27,8 +27,9 @@ export default async (req, res) => {
     if (!id) {
       try {
         const { toDoInput } = JSON.parse(body);
-        const result = await ToDo.create({ ...toDoInput, date: new Date().getTime() });
-        res.status(200).send(result);
+        const result = await ToDo.create({ ...toDoInput });
+        const success = Boolean(await result)
+        res.status(200).send(success);
       } catch {
         res.status(400);
       }
